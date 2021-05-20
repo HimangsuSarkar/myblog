@@ -23,7 +23,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 
 Route::get('/', function () {
     return view('frontend.website.home');
-});
+})->name('website');
 Route::get('/about', function () {
     return view('frontend.website.about');
 });
@@ -40,7 +40,13 @@ Route::get('/post', function () {
 });
 
 //admin panel
-Route::get('/admin', function () {
-    return view('backend.dashboard.index');
+
+Route::group(['prefix'=>'admin','middleware'=>['auth']],function (){
+    Route::get('/dashboard', function () {
+        return view('backend.dashboard.index');
+    });
+
+Route::resource('category',\App\Http\Controllers\CategoryController::class);
 });
+
 
