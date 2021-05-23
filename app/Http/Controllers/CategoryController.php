@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
@@ -14,7 +16,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view('backend.category.index');
+        $categories=category::orderBy('created_at','DESC')->paginate(20);
+        return view('backend.category.index',compact('categories'));
     }
 
     /**
@@ -35,7 +38,17 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request,[
+          'name'=>'required|unique:categories,name',
+        ]);
+        $category=category::create([
+           'name'=>$request->name,
+            'slug'=>Str::slug($request->name),
+            'description'=>$request->description,
+
+        ]);
+        Session::flash('success','Category created successfully');
+        return redirect()->back();
     }
 
     /**
