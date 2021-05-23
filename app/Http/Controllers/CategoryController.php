@@ -43,7 +43,7 @@ class CategoryController extends Controller
         ]);
         $category=category::create([
            'name'=>$request->name,
-            'slug'=>Str::slug($request->name),
+            'slug'=>Str::slug($request->name,'-'),
             'description'=>$request->description,
 
         ]);
@@ -70,7 +70,7 @@ class CategoryController extends Controller
      */
     public function edit(category $category)
     {
-        //
+        return view('backend.category.edit',compact('category'));
     }
 
     /**
@@ -82,7 +82,19 @@ class CategoryController extends Controller
      */
     public function update(Request $request, category $category)
     {
-        //
+        // validation
+        $this->validate($request, [
+            'name' => "required|unique:categories,name,$category->id",
+        ]);
+
+        $category->name = $request->name;
+        $category->slug = Str::slug($request->name, '-');
+        $category->description = $request->description;
+        $category->save();
+
+        Session::flash('success', 'Category updated successfully');
+        return redirect()->back();
+
     }
 
     /**
@@ -93,6 +105,9 @@ class CategoryController extends Controller
      */
     public function destroy(category $category)
     {
-        //
+       $category->delete();
+       
+       Session::flash('success','Category deleted successfully');
+       return redirect()->route('category.index');
     }
 }
