@@ -47,6 +47,7 @@ Route::group(['prefix'=>'admin','middleware'=>['auth']],function (){
     });
 
 Route::resource('category',\App\Http\Controllers\CategoryController::class);
+Route::resource('tag',\App\Http\Controllers\TagController::class);
 });
 
 

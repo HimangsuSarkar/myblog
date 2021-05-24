@@ -176,13 +176,23 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item mt-auto">
-                                <a href="{{ route('category.index') }}" class="nav-link">
+                                <a href="{{ route('category.index') }}" class="nav-link  {{ (request()->is('admin/category*')) ? 'active': '' }}">
                                     <i class="nav-icon fas fa-tags"></i>
                                     <p>
                                         Categories
                                     </p>
                                 </a>
                             </li>
+
+                            <li class="nav-item mt-auto">
+                                <a href="{{ route('tag.index') }}" class="nav-link  {{ (request()->is('admin/tag*')) ? 'active': '' }}">
+                                    <i class="nav-icon fas fa-tag"></i>
+                                    <p>
+                                        Tags
+                                    </p>
+                                </a>
+                            </li>
+
                         </ul>
                     </li>
                     <li class="nav-item mt-auto">
